@@ -1,10 +1,15 @@
-#include "GUI.H"
-#include "Points.h"
-#include "Windows.h"
+#include "librarys.h"
+#include "newWin.h"
 
 int main() {
-  Windows *main_window = new Windows(0,0,640,480,"Robot Shop");
-  Fl::run();
-  delete main_window;
-  return 1;
+  // Init Windows
+  newWin mainWin(640,480,"Shop");
+  
+  mainWin.newWinProp();
+  mainWin.createLogin();
+  mainWin.createPM();
+
+  mainWin.newWinShow();
+
+  return Fl::run();
 }
