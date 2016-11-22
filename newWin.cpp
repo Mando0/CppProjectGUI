@@ -53,8 +53,13 @@ void newWin::createPM() {
   title->labelsize(20);
   // Create Part Btn
   Fl_Button *partsBtn = new Fl_Button(130,150,150,50,"Create Parts");
+  partsBtn->callback((Fl_Callback*)showPartMenuCB);
   // Create Robot Btn
   Fl_Button *robotBtn = new Fl_Button(330,150,150,50,"Create Robot");
+  // Create View Parts Btn
+  Fl_Button *partViewBtn = new Fl_Button(130,250,150,50,"View Parts");
+  // Create View Model Btn
+  Fl_Button *robotViewBtn = new Fl_Button(330,250,150,50,"View Robots");
   pm->end();
   pm->hide();
 }
@@ -65,4 +70,36 @@ void newWin::loginBtnCB(Fl_Widget *w,void *v) {
       ((Fl_Group*)(w->parent()))->hide();
       ((Fl_Group*)(w->parent()->parent()->child(2)))->show();
   }
+}
+
+void newWin::createPartMenu() {
+  partMenu = new Fl_Group(0,30,640,480);
+  partMenu->begin();
+  // Sidebar Names
+  tabW = new Fl_Hold_Browser(10,40,150,380);
+  tabW->add("Head");
+  tabW->add("Arms");
+  tabW->add("Torso");
+  tabW->add("Battery");
+  tabW->add("Locomotor");
+
+  // Info Group
+  dataGroup[0] = new Fl_Group(170,40,450,380);
+  dataGroup[0]->box(FL_ENGRAVED_BOX);
+  dataGroup[0]->align(FL_ALIGN_INSIDE|FL_ALIGN_TOP);
+  dataGroup[0]->labelsize(24);
+  hName = new Fl_Input(370,50,200,20,"Part Name:");
+  hNum = new Fl_Int_Input(370,70,200,20,"Part Number:");
+  hWeight = new Fl_Float_Input(370,90,200,20,"Part Weight:");
+  hCost = new Fl_Float_Input(370,110,200,20,"Part Cost:");
+  hDesc = new Fl_Multiline_Input(370,130,200,60,"Description:");
+  dataGroup[0]->end();
+
+  partMenu->end();
+  partMenu->hide();
+}
+
+void newWin::showPartMenuCB(Fl_Widget *w, void *v) {
+  ((Fl_Group*)(w->parent()->parent()->child(2)))->hide();
+  ((Fl_Group*)(w->parent()->parent()->child(3)))->show();
 }

@@ -3,11 +3,15 @@
 
 int main() {
   // Init Windows
-  newWin mainWin(640,480,"Shop");
+  newWin mainWin(640,480,"Robbie Robot Shop");
   
   mainWin.newWinProp();
+  // child 1
   mainWin.createLogin();
+  // child 2
   mainWin.createPM();
+  // child 3
+  mainWin.createPartMenu();
 
   mainWin.newWinShow();
 
