@@ -72,6 +72,18 @@ void newWin::loginBtnCB(Fl_Widget *w,void *v) {
   }
 }
 
+void newWin::selectGroupCB(Fl_Widget *w, void *v){
+  // Show group that is selected
+  for (int i = 0; i < 3; i++) {
+    if( i == ((Fl_Hold_Browser*)(w))->value()-1) {
+      ((Fl_Group*)(w->parent()->child(i+1)))->show();
+    }
+    else {
+      ((Fl_Group*)(w->parent()->child(i+1)))->hide();
+    }
+  }
+}
+
 void newWin::createPartMenu() {
   partMenu = new Fl_Group(0,30,640,480);
   partMenu->begin();
@@ -82,8 +94,10 @@ void newWin::createPartMenu() {
   tabW->add("Torso");
   tabW->add("Battery");
   tabW->add("Locomotor");
+  tabW->select(1);
 
   // Info Group
+  // Head Tab
   dataGroup[0] = new Fl_Group(170,40,450,380);
   dataGroup[0]->box(FL_ENGRAVED_BOX);
   dataGroup[0]->align(FL_ALIGN_INSIDE|FL_ALIGN_TOP);
@@ -95,6 +109,38 @@ void newWin::createPartMenu() {
   hDesc = new Fl_Multiline_Input(370,130,200,60,"Description:");
   dataGroup[0]->end();
 
+  // Arm Tab
+  dataGroup[1] = new Fl_Group(170,40,450,380);
+  dataGroup[1]->box(FL_ENGRAVED_BOX);
+  dataGroup[1]->align(FL_ALIGN_INSIDE|FL_ALIGN_TOP);
+  dataGroup[1]->labelsize(24);
+  aName = new Fl_Input(370,50,200,20,"Part Name:");
+  aNum = new Fl_Int_Input(370,70,200,20,"Part Number:");
+  aWeight = new Fl_Float_Input(370,90,200,20,"Part Weight:");
+  aCost = new Fl_Float_Input(370,110,200,20,"Part Cost:");
+  aPow = new Fl_Float_Input(370,130,200,20,"Part Power:");
+  aDesc = new Fl_Multiline_Input(370,150,200,60,"Description:");
+  dataGroup[1]->hide();
+  dataGroup[1]->end();
+
+  // Torso Tab
+  dataGroup[2] = new Fl_Group(170,40,450,380);
+  dataGroup[2]->box(FL_ENGRAVED_BOX);
+  dataGroup[2]->align(FL_ALIGN_INSIDE|FL_ALIGN_TOP);
+  dataGroup[2]->labelsize(24);
+  lName = new Fl_Input(370,50,200,20,"Part Name:");
+  lNum = new Fl_Int_Input(370,70,200,20,"Part Number:");
+  lWeight = new Fl_Float_Input(370,90,200,20,"Part Weight:");
+  lCost = new Fl_Float_Input(370,110,200,20,"Part Cost:");
+  lBatComp = new Fl_Int_Input(370,130,200,20,"Battery Compartments:");
+  lDesc = new Fl_Multiline_Input(370,150,200,60,"Description:");
+  dataGroup[2]->hide();
+  dataGroup[2]->end();
+
+
+
+  // Create Init CB
+  tabW->callback(selectGroupCB);
   partMenu->end();
   partMenu->hide();
 }
