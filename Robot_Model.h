@@ -11,6 +11,7 @@
 using namespace std;
 
 class Robot_Model {
+  friend class newWin;
   private:
     string name;
     Head h;

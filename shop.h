@@ -7,8 +7,9 @@
 using namespace std;
 
 class Shop {
-  friend class View;
-  friend class Controller;
+  //friend class View;
+  //friend class Controller;
+  friend class newWin;
   public:
     string name;
     string description;
