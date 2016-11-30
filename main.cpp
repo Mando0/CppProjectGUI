@@ -3,9 +3,6 @@
 #include "shop.h"
 
 int main() {
-  // Init Shop
-  //Shop shop;
-  //Controller controller(shop);
   // Init Windows
   newWin mainWin(640,480,"Robbie Robot Shop");
   
@@ -18,6 +15,8 @@ int main() {
   mainWin.createPartMenu();
   // child 4
   mainWin.partView();
+  // child 5
+  mainWin.createRobotWin();
 
   mainWin.newWinShow();
 

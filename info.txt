@@ -1,0 +1,10 @@
+1 Head1 001 10 10.50 Desc
+2 Arm1 1 5 15 10 Desc 
+2 Arm2 2 20 15 7.5 Desc 
+3 Torso1 1 25 15.40 2 Desc 
+3 Torso2 2 8 9.50 1 Desc 
+3 Toros3 3 25 20.50 3 Desc 
+4 Batt1 1 15 5.50 10 Desc 
+4 Batt3 3 12 13.50 15 Desc 
+5 Loco1 1 15 10 12 15 Desc 
+1 Head5 5 10 7.50 asdf 

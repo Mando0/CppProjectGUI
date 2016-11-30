@@ -56,6 +56,7 @@ void newWin::createPM() {
   partsBtn->callback((Fl_Callback*)showPartMenuCB);
   // Create Robot Btn
   Fl_Button *robotBtn = new Fl_Button(330,150,150,50,"Create Robot");
+  robotBtn->callback((Fl_Callback*)createRobotCB);
   // Create View Parts Btn
   Fl_Button *partViewBtn = new Fl_Button(130,250,150,50,"View Parts");
   partViewBtn->callback((Fl_Callback*)partViewCB);
@@ -79,28 +80,60 @@ void newWin::partView() {
   string line;
   while(getline(infile,line)) {
     istringstream iss(line);
-    string a1;
-    int c;
-    iss >> c >> a1;
+    string a1, desc, name;
+    int c, num, comp, totalEng,maxSpd,pwrCons;
+    double weight,cost,pow;
+    iss >> c >> name;
     switch(c) {
       case 1:
-        h.set_name(a1);
+        iss >> num >> weight >> cost >> desc;
+        h.set_name(name);
+        h.set_part_number(num);
+        h.set_weight(weight);
+        h.set_cost(cost);
+        h.set_description(desc);
         head.push_back(h);
         break;
       case 2:
-        a.set_name(a1);
+        iss >> num >> weight >> cost >> pow >> desc; 
+        a.set_name(name);
+        a.set_part_number(num);
+        a.set_weight(weight);
+        a.set_cost(cost);
+        a.set_power_consumed(pow);
+        a.set_description(desc);
         arm.push_back(a);
         break;
       case 3:
-        t.set_name(a1);
+        iss >> num >> weight >> cost >> comp >> desc;
+        t.set_name(name);
+        t.set_part_number(num);
+        t.set_weight(weight);
+        t.set_cost(cost);
+        t.set_compartments(comp);
+        t.set_description(desc);
         torso.push_back(t);
         break;
       case 4:
-        b.set_name(a1);
+        iss >> num >> weight >> cost >> totalEng >> desc;
+        b.set_name(name);
+        b.set_part_number(num);
+        b.set_weight(weight);
+        b.set_cost(cost);
+        b.set_energy(totalEng);
+        b.set_description(desc);
         battery.push_back(b);
         break;
       case 5:
-        l.set_name(a1);
+        iss >> num >> weight >> cost >> maxSpd >> pwrCons >> desc;
+        l.set_name(name);
+        l.set_part_number(num);
+        l.set_weight(weight);
+        l.set_cost(cost);
+        l.set_max_speed(maxSpd);
+        l.set_power_consumed(pwrCons);
+        l.set_description(desc);
+        l.set_name(name);
         locomotor.push_back(l);
         break;
     }
@@ -124,13 +157,163 @@ void newWin::partView() {
     tab2->add(head[i].get_name().c_str());
   }
   
+
+  // Part Details
+  //tab3 = new Fl_Hold_Browser(290,40,200,380
+  dataGroupS[0] = new Fl_Group(290,40,335,380);
+  dataGroupS[0]->box(FL_ENGRAVED_BOX);
+  dataGroupS[0]->align(FL_ALIGN_INSIDE|FL_ALIGN_TOP);
+  dataGroupS[0]->labelsize(24);
+  hNumS = new Fl_Int_Input(390,50,220,20,"Part Number:");
+  hWeightS = new Fl_Float_Input(390,70,220,20,"Part Weight:");
+  hCostS = new Fl_Float_Input(390,90,220,20,"Part Cost:");
+  hDescS = new Fl_Multiline_Input(390,110,220,60,"Description:");
+  dataGroupS[0]->end();
+
+  dataGroupS[1] = new Fl_Group(290,40,335,380);
+  dataGroupS[1]->box(FL_ENGRAVED_BOX);
+  dataGroupS[1]->align(FL_ALIGN_INSIDE|FL_ALIGN_TOP);
+  dataGroupS[1]->labelsize(24);
+  aNumS = new Fl_Int_Input(390,50,220,20,"Part Number:");
+  aWeightS = new Fl_Float_Input(390,70,220,20,"Part Weight:");
+  aCostS = new Fl_Float_Input(390,90,220,20,"Part Cost:");
+  aPowS = new Fl_Float_Input(390,110,220,20,"Part Power:");
+  aDescS = new Fl_Multiline_Input(390,130,220,60,"Description:");
+  dataGroupS[1]->hide();
+  dataGroupS[1]->end();
+
+  dataGroupS[2] = new Fl_Group(290,40,335,380);
+  dataGroupS[2]->box(FL_ENGRAVED_BOX);
+  dataGroupS[2]->align(FL_ALIGN_INSIDE|FL_ALIGN_TOP);
+  dataGroupS[2]->labelsize(24);
+  tNumS = new Fl_Int_Input(390,50,220,20,"Part Number:");
+  tWeightS = new Fl_Float_Input(390,70,220,20,"Part Weight:");
+  tCostS = new Fl_Float_Input(390,90,220,20,"Part Cost:");
+  tBatCompS = new Fl_Int_Input(390,110,220,20,"Compartments:");
+  tDescS = new Fl_Multiline_Input(390,130,220,60,"Description:");
+  dataGroupS[2]->hide();
+  dataGroupS[2]->end();
+
+  dataGroupS[3] = new Fl_Group(290,40,335,380);
+  dataGroupS[3]->box(FL_ENGRAVED_BOX);
+  dataGroupS[3]->align(FL_ALIGN_INSIDE|FL_ALIGN_TOP);
+  dataGroupS[3]->labelsize(24);
+  bNumS = new Fl_Int_Input(390,50,220,20,"Part Number:");
+  bWeightS = new Fl_Float_Input(390,70,220,20,"Part Weight:");
+  bCostS = new Fl_Float_Input(390,90,220,20,"Part Cost:");
+  bTotalEngS = new Fl_Int_Input(390,110,220,20,"Total Energy:");
+  bDescS = new Fl_Multiline_Input(390,130,220,60,"Description:");
+  dataGroupS[3]->hide();
+  dataGroupS[3]->end();
+
+  dataGroupS[4] = new Fl_Group(290,40,335,380);
+  dataGroupS[4]->box(FL_ENGRAVED_BOX);
+  dataGroupS[4]->align(FL_ALIGN_INSIDE|FL_ALIGN_TOP);
+  dataGroupS[4]->labelsize(24);
+  lNumS = new Fl_Int_Input(390,50,220,20,"Part Number:");
+  lWeightS = new Fl_Float_Input(390,70,220,20,"Part Weight:");
+  lCostS = new Fl_Float_Input(390,90,220,20,"Part Cost:");
+  lMaxSpdS = new Fl_Int_Input(390,110,220,20,"Total Energy:");
+  lPwrConsS = new Fl_Int_Input(390,130,220,20,"Power Consumed:");
+  lDescS = new Fl_Multiline_Input(390,150,220,60,"Description:");
+  dataGroupS[4]->hide();
+  dataGroupS[4]->end();
+
   tab1->callback(selectPartCB,this);
+  tab2->callback(pickPartCB,this);
 
   // Back Button
   Fl_Button *backBtn = new Fl_Button(10,430,150,30,"Back");
   backBtn->callback(backBtnCB);
   partMenu->end();
   partMenu->hide();
+}
+
+
+void newWin::pickPartCB(Fl_Widget *w, void *v) {
+  ((newWin*)v)->pickPart(w);
+}
+
+void newWin::pickPart(Fl_Widget *w) {
+  int i = tab1->value();
+  int j = tab2->value();
+  switch(i) {
+    case 1:
+      if( j == 0) {
+        hNumS->value("");
+        hWeightS->value("");
+        hCostS->value("");
+        hDescS->value("");
+        break;
+      } 
+      hNumS->value(to_string(head[j-1].get_part_number()).c_str());
+      hWeightS->value(to_string(head[j-1].get_weight()).c_str());
+      hCostS->value(to_string(head[j-1].get_cost()).c_str());
+      hDescS->value(head[j-1].get_description().c_str());
+      break;
+    case 2:
+      if(j == 0) {
+        aNumS->value("");
+        aWeightS->value("");
+        aCostS->value("");
+        aPowS->value("");
+        aDescS->value("");
+        break;
+      }
+      aNumS->value(to_string(arm[j-1].get_part_number()).c_str());
+      aWeightS->value(to_string(arm[j-1].get_weight()).c_str());
+      aCostS->value(to_string(arm[j-1].get_cost()).c_str());
+      aPowS->value(to_string(arm[j-1].power_consumed()).c_str());
+      aDescS->value(arm[j-1].get_description().c_str());
+      break;
+    case 3:
+      if(j == 0) {
+        tNumS->value("");
+        tWeightS->value("");
+        tCostS->value("");
+        tBatCompS->value("");
+        tDescS->value("");
+        break;
+      }
+      tNumS->value(to_string(torso[j-1].get_part_number()).c_str());
+      tWeightS->value(to_string(torso[j-1].get_weight()).c_str());
+      tCostS->value(to_string(torso[j-1].get_cost()).c_str());
+      tBatCompS->value(to_string(torso[j-1].get_compartments()).c_str());
+      tDescS->value(torso[j-1].get_description().c_str());
+      break;
+    case 4:
+     if(j == 0) {
+        bNumS->value("");
+        bWeightS->value("");
+        bCostS->value("");
+        bTotalEngS->value("");
+        bDescS->value("");
+        break;
+      }
+      bNumS->value(to_string(battery[j-1].get_part_number()).c_str());
+      bWeightS->value(to_string(battery[j-1].get_weight()).c_str());
+      bCostS->value(to_string(battery[j-1].get_cost()).c_str());
+      bTotalEngS->value(to_string(battery[j-1].get_energy()).c_str());
+      bDescS->value(torso[j-1].get_description().c_str());
+      break;  
+    case 5:
+     if(j == 0) {
+        lNumS->value("");
+        lWeightS->value("");
+        lCostS->value("");
+        lMaxSpdS->value("");
+        lPwrConsS->value("");
+        lDescS->value("");
+        break;
+      }
+      lNumS->value(to_string(locomotor[j-1].get_part_number()).c_str());
+      lWeightS->value(to_string(locomotor[j-1].get_weight()).c_str());
+      lCostS->value(to_string(locomotor[j-1].get_cost()).c_str());
+      lMaxSpdS->value(to_string(locomotor[j-1].get_max_speed()).c_str());
+      lPwrConsS->value(to_string(locomotor[j-1].power_consumed()).c_str());
+      lDescS->value(locomotor[j-1].get_description().c_str());
+      break;  
+  }
 }
 
 void newWin::selectPartCB(Fl_Widget *w, void *v) {
@@ -172,6 +355,14 @@ int i = tab1->value();
       break;
     default:
       break;
+  }
+  for(int i = 0; i < 5; i++) {
+    if( i == (tab1->value()-1)){
+      dataGroupS[i]->show();
+    }
+    else {
+      dataGroupS[i]->hide();
+    }
   }
 }
 
@@ -231,11 +422,20 @@ void newWin::saveArmCB(Fl_Widget *w, void *v) {
 void newWin::saveArm(Fl_Widget *w) {
   ofstream partsinfo("info.txt",ios_base::out|ios_base::app);
   partsinfo << "2 ";
-  partsinfo << aName->value();
-  partsinfo << " ";
+  partsinfo << aName->value() << " ";
+  partsinfo << aNum->value() << " ";
+  partsinfo << aWeight->value() << " ";
+  partsinfo << aCost->value() << " ";
+  partsinfo << aPow->value() << " ";
+  partsinfo << aDesc->value() << " ";
   partsinfo << '\n';
   partsinfo.close();
   aName->value("");
+  aNum->value("");
+  aWeight->value("");
+  aCost->value("");
+  aPow->value("");
+  aDesc->value("");
 }
 
 void newWin::saveTorsoCB(Fl_Widget *w, void *v) {
@@ -245,11 +445,68 @@ void newWin::saveTorsoCB(Fl_Widget *w, void *v) {
 void newWin::saveTorso(Fl_Widget *w) {
   ofstream partsinfo("info.txt",ios_base::out|ios_base::app);
   partsinfo << "3 ";
-  partsinfo << tName->value();
-  partsinfo << " ";
+  partsinfo << tName->value() << " ";
+  partsinfo << tNum->value() << " ";
+  partsinfo << tWeight->value() << " ";
+  partsinfo << tCost->value() << " ";
+  partsinfo << tBatComp->value() << " ";
+  partsinfo << tDesc->value() << " ";
   partsinfo << '\n';
   partsinfo.close();
   tName->value("");
+  tNum->value("");
+  tWeight->value("");
+  tCost->value("");
+  tBatComp->value("");
+  tDesc->value("");
+}
+
+void newWin::saveBatteryCB(Fl_Widget *w, void *v) {
+  ((newWin*)v)->saveBattery(w);
+}
+
+void newWin::saveBattery(Fl_Widget *w) {
+  ofstream partsinfo("info.txt",ios_base::out|ios_base::app);
+  partsinfo << "4 ";
+  partsinfo << bName->value() << " ";
+  partsinfo << bNum->value() << " ";
+  partsinfo << bWeight->value() << " ";
+  partsinfo << bCost->value() << " ";
+  partsinfo << bTotalEng->value() << " ";
+  partsinfo << bDesc->value() << " ";
+  partsinfo << '\n';
+  partsinfo.close();
+  bName->value("");
+  bNum->value("");
+  bWeight->value("");
+  bCost->value("");
+  bTotalEng->value("");
+  bDesc->value("");
+}
+
+void newWin::saveLocomotorCB(Fl_Widget *w, void *v) {
+  ((newWin*)v)->saveLocomotor(w);
+}
+
+void newWin::saveLocomotor(Fl_Widget *w) {
+  ofstream partsinfo("info.txt",ios_base::out|ios_base::app);
+  partsinfo << "5 ";
+  partsinfo << lName->value() << " ";
+  partsinfo << lNum->value() << " ";
+  partsinfo << lWeight->value() << " ";
+  partsinfo << lCost->value() << " ";
+  partsinfo << lMaxSpd->value() << " ";
+  partsinfo << lPwrCons->value() << " ";
+  partsinfo << lDesc->value() << " ";
+  partsinfo << '\n';
+  partsinfo.close();
+  lName->value("");
+  lNum->value("");
+  lWeight->value("");
+  lCost->value("");
+  lMaxSpd->value("");
+  lPwrCons->value("");
+  lDesc->value("");
 }
 
 void newWin::createPartMenu() {
@@ -323,6 +580,7 @@ void newWin::createPartMenu() {
   bTotalEng = new Fl_Int_Input(370,130,200,20,"Total Energy:");
   bDesc = new Fl_Multiline_Input(370,150,200,60,"Description:");
   Fl_Button *bCreate = new Fl_Button(370,350,200,60,"Create");
+  bCreate->callback(saveBatteryCB,this);
   dataGroup[3]->hide();
   dataGroup[3]->end();
 
@@ -339,6 +597,7 @@ void newWin::createPartMenu() {
   lPwrCons = new Fl_Int_Input(370,150,200,20,"Power Consumed:");
   lDesc = new Fl_Multiline_Input(370,170,200,60,"Description:");
   Fl_Button *lCreate = new Fl_Button(370,350,200,60,"Create");
+  lCreate->callback(saveLocomotorCB,this);
   dataGroup[4]->hide();
   dataGroup[4]->end();
 
@@ -362,3 +621,75 @@ void newWin::showPartMenuCB(Fl_Widget *w, void *v) {
   ((Fl_Group*)(w->parent()->parent()->child(2)))->hide();
   ((Fl_Group*)(w->parent()->parent()->child(3)))->show();
 }
+
+void newWin::createRobotCB(Fl_Widget *w, void *v) {
+  ((Fl_Group*)(w->parent()->parent()->child(2)))->hide();
+  ((Fl_Group*)(w->parent()->parent()->child(5)))->show();
+}
+
+/*void newWin::addHCostCB(Fl_Widget *w, void *v) {
+  ((newWin*)v)->addHCost(w);
+}
+
+void newWin::addHCost(Fl_Widget *w) {
+  int i = hTab->value()-1;
+  if(i == -1) return;
+  rPartCost->value(to_string(head[i].get_cost()).c_str());
+}
+*/
+void newWin::createRobotWin() {
+  createRobotG = new Fl_Group(0,30,640,480);
+  createRobotG->begin();
+  if( head.empty() || arm.empty() || battery.empty() || locomotor.empty() || torso.empty()) {
+    Fl_Box *title = new Fl_Box(50,50,540,30);
+    title->label("Need to create one of each part to make model");
+    title->labelsize(20);
+  }
+  else {
+    hTab = new Fl_Hold_Browser(10,40,110,200);
+    for(int i = 0; i < head.size(); i++) {
+      hTab->add(head[i].get_name().c_str());
+    }
+    aTab = new Fl_Hold_Browser(130,40,110,200);
+    for(int i = 0; i < arm.size(); i++) {
+      aTab->add(arm[i].get_name().c_str());
+    }
+    tTab = new Fl_Hold_Browser(250,40,110,200);
+    for(int i = 0; i < torso.size(); i++) {
+      tTab->add(torso[i].get_name().c_str());
+    } 
+    bTab = new Fl_Hold_Browser(370,40,110,200);
+    for(int i = 0; i < battery.size(); i++) {
+      bTab->add(battery[i].get_name().c_str());
+    }
+    lTab = new Fl_Hold_Browser(490,40,110,200);
+    for(int i = 0; i < locomotor.size(); i++) {
+      lTab->add(locomotor[i].get_name().c_str());
+    } 
+    robotBox = new Fl_Group(10,250,590,160);
+    robotBox->box(FL_ENGRAVED_BOX);
+    rName = new Fl_Input(110,260,200,20,"Robot Name:");
+    rCost = new Fl_Float_Input(110,280,200,20,"Robot Cost:");
+    rNum = new Fl_Int_Input(110,300,200,20,"Model number:");
+    rMaxSpd = new Fl_Int_Input(110,320,200,20,"Max Speed:");
+    rPartCost = new Fl_Float_Input(410,260,200,20,"Part Cost:");
+    //hTab->callback(addHCostCB);
+    Fl_Button *rCreate = new Fl_Button(410,430,150,30,"Create");
+    robotBox->end();
+
+
+  }
+
+  // Back Btn
+  Fl_Button *backBtn = new Fl_Button(10,430,150,30,"Back");
+  backBtn->callback(backBtnCB);
+
+  createRobotG->end();
+  createRobotG->hide();
+}
+
+
+
+
+
+
